@@ -1,22 +1,19 @@
 {
-  "name": "librack",
+  "name": "libra-api",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r esm index.js"
-  },
-  "author": "",
-  "license": "ISC",
+  "description": "Libra API for humanitarian donations",
+  "main": "api.js",
   "dependencies": {
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "kulap-libra": "^2.0.2",
-    "libra-core": "^1.0.7",
-    "request": "^2.88.0",
-    "util": "^0.12.1",
-    "xml-js": "^1.6.11"
+    "lodash": "^4.17.15",
+    "mongodb": "^3.3.2",
+    "random-key": "^0.3.2"
   },
-  "devDependencies": {},
-  "description": ""
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Team Libra (Sustainable Finance hackathon)",
+  "license": "ISC"
 }
