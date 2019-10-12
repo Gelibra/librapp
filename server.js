@@ -1,6 +1,8 @@
-import { LibraClient, LibraNetwork, LibraWallet, Account as LibraAccount } from 'kulap-libra';
-import _ from 'lodash';
-
+const LibraClient = require('kulap-libra').LibraClient;
+const LibraNetwork = require('kulap-libra').LibraNetwork;
+const LibraWallet = require('kulap-libra').LibraWallet;
+const Account = require('kulap-libra').LibraAccount;
+const _ = require('lodash');
 const express = require('express');
 const app = express();
 const libraClient = new LibraClient({ network: LibraNetwork.Testnet });
@@ -27,7 +29,7 @@ app.get('/', function (req, res) {
 	});
 });
 
-app.get('/account/create', function (req, res) {
+app.post('/account/create', function (req, res) {
 	const phoneNumber = req.body.number;
 	const wallet = new LibraWallet();
 	const account = wallet.newAccount();
@@ -49,7 +51,8 @@ app.get('/account/create', function (req, res) {
 	  const userWalletInfo = {"public_key": publicKey, "mnemonic": mnemonic};
 	  const userId = {"_id": phoneNumber};
 	  const userEntry = _.merge(userId, userWalletInfo, secretKey);
-	  collection.insertOne(userEntry, (err, result) => {
+	  collection.insertOne(userEntry, async (err, result) => {
+	  	await libraClient.mintWithFaucetService(publicKey, 20e6);
 	  	return res.send(userEntry);
 	  });
 	});	
