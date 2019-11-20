@@ -6,8 +6,13 @@ import {
   LibraClient,
   LibraNetwork,
   LibraWallet,
+  Mnemonic,
   Account as LibraAccount
 } from 'kulap-libra';
+
+import { generateMnemonic } from 'bip39';
+
+app.use(express.json());
 
 // routes go here
 app.listen(port, () => {
@@ -49,16 +54,21 @@ async function checkTransfer(res, amount) {
     network: LibraNetwork.Testnet
   })
 
+  var mnemonic = generateMnemonic(256);
+
   const wallet = new LibraWallet({
-    mnemonic: 'upgrade salt test stable drop paddle',
+    mnemonic: mnemonic,
 
   });
   const account = wallet.newAccount();
+  await client.mintWithFaucetService(account.getAddress(), 20e6);
   const account2Address = 'e3dc341f99d3c1329dbeda40ec3d3bfe424ede9c59d87399266f3b705784ccd5';
-  const response = await client.transferCoins(account, account2Address, amount.concat("e6"));
-
+  console.log("Generated address is: " + account.getAddress().toHex());
+  console.log("Transfering...");
+  const response = await client.transferCoins(account, account2Address, Number(amount)*1e6);
+  console.log("Transfer done.");
   // wait for transaction confirmation
-  res.send({status:"transaction done"})
+  return res.send("transaction done")
 }
 
 async function checkStatus(res) {
@@ -86,13 +96,12 @@ app.get('/api', (req, res) => {
 
 })
 
-app.get('/transfer', (req, res) => {
-
+app.post('/transaction', (req, res) => {
   let data = {
-    amount: req.query.amount
+    amount: req.body.amount
   }
 
-  checkTransfer(res, data.amount)
+  return checkTransfer(res, data.amount)
 
 })
 
