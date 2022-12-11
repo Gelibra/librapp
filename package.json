@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "esm": "^3.2.25",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "kulap-libra": "latest",
     "libra-core": "^1.0.7",
     "request": "^2.88.0",
